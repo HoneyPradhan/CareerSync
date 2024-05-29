@@ -84,41 +84,110 @@ export const userLogoutAction = () => async (dispatch) => {
 
 
 //user profile action
-export const userProfileAction = () => async (dispatch) => {
+// export const userProfileAction = () => async (dispatch) => {
+//     dispatch({ type: USER_LOAD_REQUEST });
+//     try {
+//         const { data } = await axios.get("https://careersyncbe-1.onrender.com/api/me");
+//         dispatch({
+//             type: USER_LOAD_SUCCESS,
+//             payload: data
+//         });
+
+//     } catch (error) {
+//         dispatch({
+//             type: USER_LOAD_FAIL,
+//             payload: error.response.data.error
+//         });
+//     }
+// }
+import {
+    USER_LOAD_REQUEST,
+    USER_LOAD_SUCCESS,
+    USER_LOAD_FAIL
+} from '../constants/userConstant';
+
+export const userProfileAction = () => async (dispatch, getState) => {
     dispatch({ type: USER_LOAD_REQUEST });
     try {
-        const { data } = await axios.get("https://careersyncbe-1.onrender.com/api/me");
+        const { userSignin: { userInfo } } = getState();
+        const response = await fetch("https://careersyncbe-1.onrender.com/api/me", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userInfo.token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
         dispatch({
             type: USER_LOAD_SUCCESS,
             payload: data
         });
 
     } catch (error) {
+        console.error("Error fetching user profile:", error);
         dispatch({
             type: USER_LOAD_FAIL,
-            payload: error.response.data.error
+            payload: error.message || "Something went wrong"
         });
     }
 }
 
 
 //all user action
-export const allUserAction = () => async (dispatch) => {
+// export const allUserAction = () => async (dispatch) => {
+//     dispatch({ type: ALL_USER_LOAD_REQUEST });
+//     try {
+//         const { data } = await axios.get("https://careersyncbe-1.onrender.com/api/allusers");
+//         dispatch({
+//             type: ALL_USER_LOAD_SUCCESS,
+//             payload: data
+//         });
+
+//     } catch (error) {
+//         dispatch({
+//             type: ALL_USER_LOAD_FAIL,
+//             payload: error.response.data.error
+//         });
+//     }
+// }
+import {
+    ALL_USER_LOAD_REQUEST,
+    ALL_USER_LOAD_SUCCESS,
+    ALL_USER_LOAD_FAIL
+} from '../constants/userConstant';
+
+export const allUserAction = () => async (dispatch, getState) => {
     dispatch({ type: ALL_USER_LOAD_REQUEST });
     try {
-        const { data } = await axios.get("https://careersyncbe-1.onrender.com/api/allusers");
+        const { userSignin: { userInfo } } = getState();
+        const response = await fetch("https://careersyncbe-1.onrender.com/api/allusers", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userInfo.token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
         dispatch({
             type: ALL_USER_LOAD_SUCCESS,
             payload: data
         });
 
     } catch (error) {
+        console.error("Error fetching all users:", error);
         dispatch({
             type: ALL_USER_LOAD_FAIL,
-            payload: error.response.data.error
+            payload: error.message || "Something went wrong"
         });
     }
 }
+
 
 //user job apply action
 export const userApplyJobAction = (job) => async (dispatch) => {
