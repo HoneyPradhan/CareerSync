@@ -100,11 +100,6 @@ export const userLogoutAction = () => async (dispatch) => {
 //         });
 //     }
 // }
-import {
-    USER_LOAD_REQUEST,
-    USER_LOAD_SUCCESS,
-    USER_LOAD_FAIL
-} from '../constants/userConstant';
 
 export const userProfileAction = () => async (dispatch, getState) => {
     dispatch({ type: USER_LOAD_REQUEST });
