@@ -148,11 +148,7 @@ export const userProfileAction = () => async (dispatch, getState) => {
 //         });
 //     }
 // }
-import {
-    ALL_USER_LOAD_REQUEST,
-    ALL_USER_LOAD_SUCCESS,
-    ALL_USER_LOAD_FAIL
-} from '../constants/userConstant';
+
 
 export const allUserAction = () => async (dispatch, getState) => {
     dispatch({ type: ALL_USER_LOAD_REQUEST });
